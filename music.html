@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 300px;
+            height: 450px;
+            margin: 50px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg {
+            width: 320px;
+            height: 470px;
+            background: url("a.jpg") no-repeat center center;
+            background-size: cover;
+            filter: blur(10px);
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            z-index: 1
+        }
+
+        .song {
+            color: #d3d3d3;
+        }
+
+        .singer {
+            color: #d3d3d3;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .ctrl-box {
+            width: 300px;
+            height: 470px;
+            position: relative;
+            z-index: 99;
+            background-color: rgba(0, 0, 0, .5);
+            /*padding: 10px 0 0 0;*/
+
+        }
+
+        .ctrl-box .header {
+            padding: 10px;
+            margin-bottom:10px ;
+            border-bottom: 1px solid rgba(225, 225, 255, .8)
+        }
+
+        .img-box {
+            width: 100%;
+            height: 300px;
+
+        }
+
+        .min .big-box {
+            width: 200px;
+            height: 200px;
+            background-color: rgba(255, 255, 255, .1);
+            margin: 45px;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+        .min{
+            overflow: hidden;
+            position: relative;
+        }
+
+        .min .img-box {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background-color: black;
+            margin: 10px auto;
+        }
+
+        .min .img-box img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 15px;
+            z-index: 11;
+        }
+        .min .line{
+            width: 80px;
+            height: 200px;
+            background: url("./img/1111.png") no-repeat;
+            background-size: 100%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: rotate(-40deg);
+            transform-origin: 66px 14px;
+            z-index: 12;
+            transition: all 1s;
+        }
+
+
+        .footer{
+            width: 100%;
+            font-size: 12px;
+            color: #cccccc;
+
+        }
+        .footer .ctrlBox{
+            width: 210px;
+            height: 2px;
+            background-color: #878787;
+            float: left;
+            margin: 8px 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .footer span{
+            float: left;
+        }
+        .footer span:first-child{
+            margin-left:6px; 
+        }
+        .footer span:last-child{
+            margin-right:5px; 
+        }
+        .footer .ctrl .circle{
+            width: 10px;
+            height: 10px;
+            background-color: #ffffff;
+            border-radius:50%;
+            margin-top:-4px;  
+            position: absolute;
+             top:0;
+            left: 0;
+            z-index: 10;
+        }
+        .footer .ctrl .now{
+            width: 0;
+            height: 2px;
+            background-color: #FFFFFF;
+            z-index: 15;
+            border-radius:50%;
+            margin-top:-0px;  
+            position: absolute;
+        }
+        .play{
+            margin-top:10px;
+        }
+        .play div{
+            float: left;
+
+        }
+        .play .ploy{
+            width: 50px;
+            height: 50px;
+            background:url("./img/bf.png") no-repeat;
+            background-size:100%;
+            border-radius: 50%;
+            margin: 0 20px;
+
+        }
+        .play .next, .play .prev{
+            margin-top:4px ;
+            width: 40px;
+            height: 40px;
+            border-radius: 50% ;
+        }
+        .play .next{
+            background:url("./img/kt.png") no-repeat;
+            background-size:100%;
+
+        }
+
+        .play .prev{
+            background:url("./img/kj.png") no-repeat;
+            background-size:100%;
+
+            margin-left:65px ;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="ctrl-box">
+            <div class="header">
+                <p class="song"></p>
+                <p class="singer"></p>
+            </div>
+            <div class="min">
+                <div class="line"></div>
+                <div class="big-box">
+                    <div class="img-box">
+                        <img src="">
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="ctrl">
+                    <span class="now-time">00:00</span>
+                    <div class="ctrlBox">
+                        <div class="bg1"></div>
+                        <div class="now"></div>
+                        <div class="circle"></div>
+                    </div>
+                    <span class="new-time">00:00</span>
+                    
+                </div>
+                <div class="play">
+                    <div class="prev"></div>
+                    <div class="ploy"></div>
+                    <div class="next"></div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="bg"></div>
+    </div>
+    <audio></audio>
+</body>
+<script>
+    // 想要播放歌曲 首先要有歌曲
+    // 模拟一个播放列表
+    var json = [
+        {
+            song: '夜曲',
+            singer: '周杰伦',
+            url: 'http://isure.stream.qqmusic.qq.com/C400001zMQr71F1Qo8.m4a?guid=9287193965&vkey=484424881FED4555A65533A1BE472A2C5A65EB3C55C4517B65509A733B1B64B22AF4471C70775E92085B3CA8BF7A687D2730C20FAF046A5D&uin=0&fromtag=66',
+            pic: 'https://y.gtimg.cn/music/photo_new/T002R300x300M0000024bjiL2aocxT.jpg?max_age=2592000'
+        },
+        {
+            song: '一曲相思',
+            singer: '半阳',
+            url: 'http://dl.stream.qqmusic.qq.com/C400002u0fTY2HoJJp.m4a?guid=9287193965&vkey=926B67B5328D6A3B813ED992B1FA074E39DB6EB4414B8AD47DDD75CD118AA31D8E617A7279896A359E5257CF3621E7CF7C82671805C5F6EB&uin=0&fromtag=66',
+            pic: 'https://y.gtimg.cn/music/photo_new/T002R300x300M000000ujFf61gJy8A.jpg?max_age=2592000'
+        },
+        {
+            song: '不能说的秘密',
+            singer: '周杰伦',
+            url: 'http://isure.stream.qqmusic.qq.com/C400002MXZNu1GToOk.m4a?guid=9287193965&vkey=5E2BDFFF5E22DA95DEAC8F97EAE5D6EF9202CF9AB66D4646D4B0E92F6BC9976BC316D5755D3358F2B42DF6210B3DE31C69A8CEAE866A3239&uin=0&fromtag=66',
+            pic: 'https://y.gtimg.cn/music/photo_new/T002R300x300M000001UP7mW458ipG.jpg?max_age=2592000'
+        },
+        {
+            song: '下坠Falling',
+            singer: 'Corki',
+            url: 'http://isure.stream.qqmusic.qq.com/C400003UULKc3CCDzR.m4a?guid=9287193965&vkey=AF8F92F8D581803D92BA985D9214DAB9086BCECA9CF6A9F91E5024E2E07490FD91FF4AE721EAFA698C652D2CF0BC3D57B9E6B61BCB1DB4AB&uin=0&fromtag=66',
+            pic: 'https://y.gtimg.cn/music/photo_new/T002R300x300M000002vRyKH3TlAnI.jpg?max_age=2592000'
+        }
+    ];
+
+
+    var audio = document.querySelector('audio');
+    var ploy = document.querySelector('.ploy');
+    var line = document.querySelector('.line');
+    var img = document.querySelector('.img-box img');
+    var song = document.querySelector('.song');
+    var singer = document.querySelector('.singer');
+    var bg = document.querySelector('.bg');
+    var prev = document.querySelector('.prev');
+    var next = document.querySelector('.next');
+    var nowTime = document.querySelector('.now-time');
+    var newTime = document.querySelector('.new-time');
+    var ctrlBox = document.querySelector('.ctrlBox');
+    var circle = document.querySelector('.circle');
+    var now = document.querySelector('.now');
+
+
+    var deg = 0;
+    var timer = null;
+    var index = 0;
+
+
+    ploy.addEventListener('click',function(){
+        // audio.paused 如果歌曲在播放 返回false 如果歌曲暂停返回true
+        console.log(audio.paused);
+        if(audio.paused){
+            playMusic();
+        }else {
+            // pause() 是暂停
+            audio.pause();
+            ploy.style.backgroundImage = "url('./img/bf.png')";
+            line.style.transform = 'rotate(-40deg)';
+            clearInterval(timer);
+        }
+    });
+    next.addEventListener('click',function () {
+        index++;
+        index  = index > json.length - 1 ? 0 : index;
+        init(index);
+        playMusic();
+
+
+    });
+    prev.addEventListener('click',function () {
+        index--;
+        index  = index < 0 ? json.length - 1 : index;
+        init(index);
+        playMusic();
+
+    });
+
+    function playMusic() {
+        // play()  是播放
+        audio.play();
+        // index  = index > json.length - 1 ? 0 : index;
+        // index  = index < 0 ? json.length - 1 : index;
+        clearInterval(timer);
+        ploy.style.backgroundImage = "url('./img/zt.png')";
+        line.style.transform = 'rotate(0deg)';
+
+        timer = setInterval(function () {
+            deg++;
+            img.style.transform = 'rotate(' + deg + 'deg)'
+        }, 30)
+    }
+
+
+    function init(index) {
+        deg = 0;
+        audio.src = json[index].url;
+        song.innerHTML = json[index].song;
+        singer.innerHTML = json[index].singer;
+        img.src = json[index].pic;
+        bg.style.background = 'url("' + json[index].pic + '") no-repeat center center'
+
+    }
+init(index);
+
+
+
+
+    // 3:1 不好看 我们要为它补0
+    function fomate(date) {
+        return date > 9 ? date : '0'+date;
+    }
+
+
+
+
+// 通过js提供的api操作音频
+
+    // audio.play();
+
+
+
+    // 当音频准备好播放的时候会触发的事件  canplay
+    // 播放时长
+
+    audio.addEventListener('canplay',function () {
+        // 获取音频时长
+        console.log(audio.duration);
+        // 取秒钟数
+        // 接收下面计算时间的方法
+        newTime.innerHTML = getTime(audio.duration);
+
+        ctrlBox.addEventListener('click',function (e) {
+            // 获取到鼠标所在控制条的位置
+            console.log(e);
+            // offsetX: 210
+            // offsetY: 1  当前点击的东西的整个宽度到你点击的位置的距离长度
+            // 当前播放时长 ： 鼠标点击位置 / 总长度 * 总时长
+            var nowTimer =  e.offsetX / ctrlBox.offsetWidth *  audio.duration;
+            console.log(nowTimer);
+            // 当前点击的位置等于 播放的总时长
+            audio.currentTime = nowTimer;
+
+
+        })
+
+
+
+    function getTime(time) {
+        var totelSecond = Math.floor(time % 60);
+        // console.log(totelSecond);
+        var totelMinues = Math.floor(time / 60);
+        // console.log(totelMinues);
+        // 把拼接好的时间 return 出去
+        return fomate(totelMinues)+':'+fomate(totelSecond);
+
+
+    }
+
+
+    // 播放的时候让事件走起来
+    // timeupdate  当播放时长得到更新后触发
+    audio.addEventListener('timeupdate',function () {
+        // console.log(1);
+        // audio.currentTime 获取当前播放时长
+        // console.log(audio.currentTime);
+        nowTime.innerHTML = getTime(audio.currentTime);
+
+        // 进度条
+        // 圆的left值 当前时长 / 总时长 *（背景条宽度 - 圆的宽度）
+        var left = audio.currentTime / audio.duration * (ctrlBox.offsetWidth - circle.offsetWidth);
+        circle.style.left = left+'px';
+        now.style.width = left +'px';
+
+
+        // 检测歌曲是否播放完成   播放完成 audio.ended 返回true
+        // if(audio.ended){
+        //     index++;
+        //     // index >= json.length ? 0 : index;
+        //     // index <= 0 ? json.length : index;
+        //     init(index);
+        //     playMusic();
+        // }
+
+    });
+
+    });
+
+
+
+</script>
+
+</html>
